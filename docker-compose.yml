@@ -1,0 +1,33 @@
+version: '3'
+services:
+  client:
+    image: loststar1991/demo_client
+    container_name: client2
+    tty: true
+    stdin_open: true
+    command: '/usr/src/app/run.sh'
+    networks:
+      mybridge:
+        ipv4_address: 172.28.1.1
+    volumes:
+      - /Users/Zack/Documents/DockerFile/client/src:/usr/src/app/src
+      - /Users/Zack/Documents/DockerFile/client/result:/usr/src/app/result
+  server:
+    image: loststar1991/demo_server
+    container_name: server2
+    tty: true
+    stdin_open: true
+    command: '/usr/src/app/run.sh'
+    networks:
+      mybridge:
+        ipv4_address: 172.28.1.2
+    volumes:
+      - /Users/Zack/Documents/DockerFile/server/src:/usr/src/app/src
+
+networks:
+  mybridge:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.28.0.0/16

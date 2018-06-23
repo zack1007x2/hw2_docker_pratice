@@ -1,28 +1,38 @@
 version: '3'
 services:
   client:
-    image: loststar1991/demo_client
-    container_name: client2
+    image: loststar1991/demo_client:latest
+    container_name: client1
     tty: true
     stdin_open: true
-    command: '/usr/src/app/run.sh'
-    networks:
-      mybridge:
-        ipv4_address: 172.28.1.1
-    volumes:
-      - /Users/Zack/Documents/DockerFile/client/src:/usr/src/app/src
-      - /Users/Zack/Documents/DockerFile/client/result:/usr/src/app/result
-  server:
-    image: loststar1991/demo_server
-    container_name: server2
-    tty: true
-    stdin_open: true
+    expose:
+      - "22"
+      - "5000"
     command: '/usr/src/app/run.sh'
     networks:
       mybridge:
         ipv4_address: 172.28.1.2
     volumes:
-      - /Users/Zack/Documents/DockerFile/server/src:/usr/src/app/src
+      - /Users/Zack/Documents/DockerFile/client/src:/usr/src/app/src
+      - /Users/Zack/Documents/DockerFile/client/result:/usr/src/app/result
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: server1
+    tty: true
+    stdin_open: true
+    expose:
+      - "22"
+      - "5001"
+    command: '/usr/src/app/run.sh'
+    networks:
+      mybridge:
+        ipv4_address: 172.28.1.3
+    volumes:
+      - server-data:/usr/src/app/src
+volumes:
+  server-data:
 
 networks:
   mybridge:

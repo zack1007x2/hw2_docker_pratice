@@ -1,0 +1,15 @@
+docker build -t loststar1991/demo_client .
+
+docker run -d -t --name client2 --mount type=bind,source=/Users/Zack/Documents/DockerFile/client/src,target=/usr/src/app/src loststar1991/demo_client
+
+docker run -d -t --name client1 --network mybridge --mount type=bind,source=/Users/Zack/Documents/DockerFile/client/src,target=/usr/src/app/src loststar1991/demo_client
+
+docker build -t loststar1991/demo_server .
+
+docker run -d -t --name server1 loststar1991/demo_server
+
+
+docker exec -it client1 bash
+docker exec -it server1 bash
+
+docker-compose up
